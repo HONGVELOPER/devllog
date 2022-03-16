@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class CommonDto {
+public class BaseDto {
     private int id;
     private LocalDateTime createDateTime = LocalDateTime.now();
     private LocalDateTime updateDateTime = LocalDateTime.now();
