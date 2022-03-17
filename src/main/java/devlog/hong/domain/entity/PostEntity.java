@@ -1,4 +1,4 @@
-package devlog.hong.entity;
+package devlog.hong.domain.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -14,10 +13,10 @@ import java.util.List;
 @Setter
 @Table(name = "posts")
 @NoArgsConstructor
-public class Post {
+public class PostEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // mysql auto-incremnet 사용
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // mysql auto-increment 사용
     @Column(name = "post_id")
     private int id;
 
@@ -36,13 +35,11 @@ public class Post {
     @Column(nullable = false)
     private String thumbNail;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDt;
+    @OneToMany(mappedBy = "postEntity", cascade = CascadeType.ALL)
+    private List<ImageEntity> images = new ArrayList<>();
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updateDt;
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Image> images = new ArrayList<>();
+//    public void addImages(ImageEntity image) {
+//        images.add(image);
+//    }
 
 }
