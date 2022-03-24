@@ -1,15 +1,15 @@
 package devlog.hong.dto;
 
 import devlog.hong.domain.entity.PostEntity;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 //@AllArgsConstructor
-public class PostDto extends BaseDto {
-    private int id;
+public class PostReqDto extends BaseDto {
     private String title;
     private String content;
     private String writer;

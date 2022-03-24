@@ -1,14 +1,10 @@
 package devlog.hong.controller;
 
 import devlog.hong.domain.entity.PostEntity;
-import devlog.hong.dto.PostDto;
+import devlog.hong.dto.PostReqDto;
 import devlog.hong.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/post")
@@ -26,5 +22,16 @@ public class PostController {
     @GetMapping("/id1")
     public PostEntity no() {
         return postService.getPost();
+    }
+
+    @PostMapping("/write")
+    public void post(@RequestBody PostReqDto postReqDto) throws Exception {
+        System.out.println(postReqDto.toString());
+        postService.writePost(postReqDto);
+
+//        requestData.forEach((key, value) -> {
+//            System.out.println("key :" + key);
+//            System.out.println("value :" + value);
+//        });
     }
 }
