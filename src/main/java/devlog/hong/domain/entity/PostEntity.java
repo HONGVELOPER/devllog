@@ -1,18 +1,18 @@
 package devlog.hong.domain.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import devlog.hong.domain.dto.PostReqDto;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @Table(name = "posts")
-@NoArgsConstructor
 public class PostEntity extends BaseEntity {
 
     @Id
@@ -38,8 +38,15 @@ public class PostEntity extends BaseEntity {
     @OneToMany(mappedBy = "postEntity", cascade = CascadeType.ALL)
     private List<ImageEntity> images = new ArrayList<>();
 
-//    public void addImages(ImageEntity image) {
-//        images.add(image);
-//    }
+    @Builder
+    public PostEntity(PostReqDto postReqDto) {
+        this.id = postReqDto.getId();
+        this.title = postReqDto.getTitle();
+        this.content = postReqDto.getContent();
+        this.writer = postReqDto.getWriter();
+        this.viewCount = postReqDto.getViewCount();
+        this.thumbNail = postReqDto.getThumbNail();
+    }
 
 }
+
