@@ -1,4 +1,4 @@
-package devlog.hong.dto;
+package devlog.hong.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;

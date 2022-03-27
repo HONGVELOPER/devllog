@@ -1,10 +1,13 @@
 package devlog.hong.controller;
 
-import devlog.hong.domain.entity.PostEntity;
-import devlog.hong.dto.PostReqDto;
+import devlog.hong.domain.dto.PostReqDto;
+import devlog.hong.domain.dto.PostResDto;
 import devlog.hong.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/post")
@@ -19,19 +22,23 @@ public class PostController {
         return "hello world";
     }
 
-    @GetMapping("/id1")
-    public PostEntity no() {
-        return postService.getPost();
+    @GetMapping("/{id}")
+    public PostResDto get(@PathVariable("id") int id) {
+        return postService.getPost(id);
     }
 
     @PostMapping("/write")
-    public void post(@RequestBody PostReqDto postReqDto) throws Exception {
+    public void post(@RequestBody PostReqDto postReqDto) {
         System.out.println(postReqDto.toString());
         postService.writePost(postReqDto);
+    }
 
-//        requestData.forEach((key, value) -> {
-//            System.out.println("key :" + key);
-//            System.out.println("value :" + value);
-//        });
+    @PatchMapping("/update/{id}")
+    public Map<String, Object> update(@PathVariable("id") int id, @RequestBody PostReqDto postReqDto) {
+        Map<String, Object> response = new HashMap<>();
+        postReqDto.setId(id);
+        System.out.println(postReqDto.toString());
+        postService.updatePost(postReqDto);
+        return response;
     }
 }

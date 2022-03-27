@@ -1,6 +1,6 @@
 package devlog.hong.domain.entity;
 
-import devlog.hong.dto.PostReqDto;
+import devlog.hong.domain.dto.PostReqDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,9 +38,6 @@ public class PostEntity extends BaseEntity {
     @OneToMany(mappedBy = "postEntity", cascade = CascadeType.ALL)
     private List<ImageEntity> images = new ArrayList<>();
 
-//    public void addImages(ImageEntity image) {
-//        images.add(image);
-//    }
     @Builder
     public PostEntity(PostReqDto postReqDto) {
         this.id = postReqDto.getId();

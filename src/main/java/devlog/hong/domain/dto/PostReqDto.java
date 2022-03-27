@@ -1,6 +1,5 @@
-package devlog.hong.dto;
+package devlog.hong.domain.dto;
 
-import devlog.hong.domain.entity.PostEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,7 +7,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-//@AllArgsConstructor
 public class PostReqDto extends BaseDto {
     private String title;
     private String content;
