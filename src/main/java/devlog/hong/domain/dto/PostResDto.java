@@ -18,7 +18,7 @@ public class PostResDto extends BaseDto {
 
     @Builder
     public PostResDto(PostEntity post) {
-        super();
+        super(post.getId());
         this.title = post.getTitle();
         this.content = post.getContent();
         this.writer = post.getWriter();

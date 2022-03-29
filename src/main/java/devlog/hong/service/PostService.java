@@ -23,15 +23,27 @@ public class PostService {
         );
     }
 
-    @Transactional
-    public void writePost(PostReqDto postReqDto) {
-        PostEntity postEntity = new PostEntity(postReqDto);
-        postRepository.save(postEntity);
+    @Transactional // 예외 처리 해야함
+    public PostResDto writePost(PostReqDto postReqDto) {
+        // 스프링 이미지 먼저 S3 연결 후, DB 올린 ID 저장으로 바꿔야함
+        PostEntity postEntity = PostEntity.builder()
+                .title(postReqDto.getTitle())
+                .content(postReqDto.getContent())
+                .writer(postReqDto.getWriter())
+                .viewCount(postReqDto.getViewCount())
+                .thumbNail(postReqDto.getThumbNail())
+                .build();
+        System.out.println("entity : " + postEntity.toString());
+//        if (!postReqDto.getImages().isEmpty()) {
+//            postEntity.setImages(postReqDto.getImages());
+//        }
+//        PostEntity savedPostEntity = postRepository.save(postEntity);
+//        System.out.println("saved : " + savedPostEntity.toString());
+        return new PostResDto(postRepository.save(postEntity));
     }
 
     @Transactional
-    public void updatePost(PostReqDto postReqDto) {
-        System.out.println("id : " + postReqDto.getId());
+    public void updatePost(int id, PostReqDto postReqDto) {
         Optional<PostEntity> originPost = postRepository.findById(postReqDto.getId());
         if (originPost.isEmpty()) {
             throw new EntityNotFoundException("해당 id에 대한 데이터가 없습니다.");

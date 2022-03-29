@@ -1,8 +1,11 @@
 package devlog.hong.domain.dto;
 
+import devlog.hong.domain.entity.ImageEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,4 +16,5 @@ public class PostReqDto extends BaseDto {
     private String writer;
     private int viewCount;
     private String thumbNail;
+    private List<ImageEntity> images;
 }

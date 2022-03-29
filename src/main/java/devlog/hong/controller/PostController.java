@@ -28,9 +28,15 @@ public class PostController {
     }
 
     @PostMapping("/write")
-    public void post(@RequestBody PostReqDto postReqDto) {
+    public Map<String, Object> post(@RequestBody PostReqDto postReqDto) {
+        Map<String, Object> response = new HashMap<>();
         System.out.println(postReqDto.toString());
-        postService.writePost(postReqDto);
+        PostResDto postResDto = postService.writePost(postReqDto);
+        if (postResDto != null) {
+            response.put("result", "SUCCESS");
+            response.put("post", postResDto);
+        }
+        return response;
     }
 
     @PatchMapping("/update/{id}")
@@ -38,7 +44,10 @@ public class PostController {
         Map<String, Object> response = new HashMap<>();
         postReqDto.setId(id);
         System.out.println(postReqDto.toString());
-        postService.updatePost(postReqDto);
+        postService.updatePost(id ,postReqDto);
         return response;
     }
+
+//    @DeleteMapping("/delete")
+//    public
 }

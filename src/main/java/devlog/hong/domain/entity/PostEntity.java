@@ -13,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "posts")
+@Builder
+@ToString
 public class PostEntity extends BaseEntity {
 
     @Id
@@ -38,15 +40,14 @@ public class PostEntity extends BaseEntity {
     @OneToMany(mappedBy = "postEntity", cascade = CascadeType.ALL)
     private List<ImageEntity> images = new ArrayList<>();
 
-    @Builder
-    public PostEntity(PostReqDto postReqDto) {
-        this.id = postReqDto.getId();
-        this.title = postReqDto.getTitle();
-        this.content = postReqDto.getContent();
-        this.writer = postReqDto.getWriter();
-        this.viewCount = postReqDto.getViewCount();
-        this.thumbNail = postReqDto.getThumbNail();
-    }
+
+//    public PostEntity(PostReqDto postReqDto) {
+//        this.title = postReqDto.getTitle();
+//        this.content = postReqDto.getContent();
+//        this.writer = postReqDto.getWriter();
+//        this.viewCount = postReqDto.getViewCount();
+//        this.thumbNail = postReqDto.getThumbNail();
+//    }
 
 }
 
