@@ -1,6 +1,5 @@
 package devlog.hong.domain.entity;
 
-import devlog.hong.domain.dto.PostReqDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,11 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "posts")
-@Builder
-@ToString
 public class PostEntity extends BaseEntity {
 
     @Id
@@ -29,7 +25,7 @@ public class PostEntity extends BaseEntity {
     private String content;
 
     @Column(nullable = false)
-    private String writer;
+    private String author;
 
     @Column(nullable = false)
     private int viewCount;
@@ -40,14 +36,20 @@ public class PostEntity extends BaseEntity {
     @OneToMany(mappedBy = "postEntity", cascade = CascadeType.ALL)
     private List<ImageEntity> images = new ArrayList<>();
 
+    @Builder
+    public PostEntity(String title, String content, String author, int viewCount, String thumbNail) {
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.viewCount = viewCount;
+        this.thumbNail = thumbNail;
+    }
 
-//    public PostEntity(PostReqDto postReqDto) {
-//        this.title = postReqDto.getTitle();
-//        this.content = postReqDto.getContent();
-//        this.writer = postReqDto.getWriter();
-//        this.viewCount = postReqDto.getViewCount();
-//        this.thumbNail = postReqDto.getThumbNail();
-//    }
-
+    public void update(String title, String content, String author, String thumbNail) {
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.thumbNail = thumbNail;
+    }
 }
 

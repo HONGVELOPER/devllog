@@ -1,28 +1,29 @@
 package devlog.hong.domain.dto;
 
 import devlog.hong.domain.entity.PostEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Getter
-@Setter
+@NoArgsConstructor
 @ToString
-public class PostResDto extends BaseDto {
+public class PostResponseDto {
+    private int id;
     private String title;
     private String content;
-    private String writer;
+    private String author;
     private int viewCount;
     private String thumbNail;
+    private LocalDateTime date;
 
-    @Builder
-    public PostResDto(PostEntity post) {
-        super(post.getId());
+    public PostResponseDto(PostEntity post) {
+        this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.writer = post.getWriter();
+        this.author = post.getAuthor();
         this.viewCount = post.getViewCount();
         this.thumbNail = post.getThumbNail();
+        this.date = post.getModifiedDate();
     }
 }
