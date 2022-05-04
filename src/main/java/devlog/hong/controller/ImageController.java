@@ -28,9 +28,14 @@ public class ImageController {
         return responseService.getListResult(imageService.save(new ImageRequestDto(fileNames)));
     }
 
-    @DeleteMapping("images")
-    public void delete(@PathVariable("postId") int postId, @RequestBody List<String> fileNames) {
+//    @DeleteMapping("/partOfImages") // UPDATE 하면서 전체가 아닌 일부 사진 삭제
+//    public void deleteByName(@RequestBody List<String> fileNames) {
+//        awsS3Service.delete(fileNames);
+//        imageService.deleteByName(fileNames);
+//    }
+
+    @DeleteMapping("images") // 게시글이 삭제되면서 해당 글에 있는 모든 사진 Cascade 삭제
+    public void deleteByPost(@RequestBody List<String> fileNames) {
         awsS3Service.delete(fileNames);
-//        imageService.delete(postId); // cascade 로 부모 삭제시 자식 삭제되게 해야겟다.
     }
 }

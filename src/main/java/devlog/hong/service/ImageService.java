@@ -27,4 +27,9 @@ public class ImageService {
         return imageResponseDtoList;
     }
 
+//    @Transactional
+//    public void deleteByName(List<String> fileNames) {
+//        imageRepository.deleteByImg(fileNames);
+//    }
+
 }

@@ -22,7 +22,7 @@ public class PostController {
     private final ResponseService responseService;
 
     @GetMapping("/posts")
-    public ListResult<PostResponseDto> findAllPost() {
+    public ListResult<PostResponseDto> findAll() {
         return responseService.getListResult(postService.findAll());
     }
 

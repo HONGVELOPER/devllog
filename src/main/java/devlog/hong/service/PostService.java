@@ -44,7 +44,7 @@ public class PostService {
                 System.out.println("image : " + image);
             }
         }
-        // 스프링 이미지 먼저 S3 연결 후, image 저장해야함
+        // 이미지 S3 저장 후, image 저장해야함
         PostEntity savedPostEntity = postRepository.save(postRequestDto.toEntity());
         System.out.println("saved : " + savedPostEntity.toString());
         return new PostResponseDto(savedPostEntity);

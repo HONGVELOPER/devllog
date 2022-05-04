@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "posts")
+@ToString
 public class PostEntity extends BaseEntity {
 
     @Id
@@ -33,7 +34,7 @@ public class PostEntity extends BaseEntity {
     @Column(nullable = false)
     private String thumbNail;
 
-    @OneToMany(mappedBy = "postEntity") // N:1 양방향 , 관계 주인 Post
+    @OneToMany(mappedBy = "postEntity", cascade = {CascadeType.ALL}, orphanRemoval=true) // N:1 양방향 , 관계 주인 Post
     List<ImageEntity> imageEntity = new ArrayList<>();
 
     @Builder
