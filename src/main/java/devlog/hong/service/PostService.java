@@ -1,55 +1,78 @@
 package devlog.hong.service;
 
+import devlog.hong.domain.entity.ImageEntity;
 import devlog.hong.domain.entity.PostEntity;
+import devlog.hong.domain.repository.ImageRepository;
 import devlog.hong.domain.repository.PostRepository;
-import devlog.hong.domain.dto.PostReqDto;
-import devlog.hong.domain.dto.PostResDto;
+import devlog.hong.dto.PostRequestDto;
+import devlog.hong.dto.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final ImageRepository imageRepository;
 
-    public PostResDto getPost(int id) {
-        Optional<PostEntity> post = postRepository.findById(id);
-        return post.map(PostResDto::new).orElseThrow(
-                () -> new EntityNotFoundException("해당 id 에 대한 데이터가 없습니다.")
-        );
+    @Transactional(readOnly = true)
+    public List<PostResponseDto> findAll() {
+        return  postRepository.findAll()
+            .stream()
+            .map(PostResponseDto::new)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public PostResponseDto findById(int id) throws EntityNotFoundException {
+        PostEntity post = postRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("해당 id 에 대한 데이터가 없습니다."));
+        return new PostResponseDto(post);
     }
 
     @Transactional
-    public void writePost(PostReqDto postReqDto) {
-        PostEntity postEntity = new PostEntity(postReqDto);
-        postRepository.save(postEntity);
-    }
-
-    @Transactional
-    public void updatePost(PostReqDto postReqDto) {
-        System.out.println("id : " + postReqDto.getId());
-        Optional<PostEntity> originPost = postRepository.findById(postReqDto.getId());
-        if (originPost.isEmpty()) {
-            throw new EntityNotFoundException("해당 id에 대한 데이터가 없습니다.");
-        } else {
-            PostEntity modifiedPost = originPost.get();
-            if (postReqDto.getTitle() != null) {
-                modifiedPost.setTitle(postReqDto.getTitle());
-            } if (postReqDto.getContent() != null) {
-                modifiedPost.setContent(postReqDto.getContent());
-            } if (postReqDto.getWriter() != null) {
-                modifiedPost.setWriter(postReqDto.getWriter());
-            } if (postReqDto.getViewCount() != 0) {
-                modifiedPost.setViewCount(postReqDto.getViewCount());
-            } if (postReqDto.getThumbNail() != null) {
-                modifiedPost.setThumbNail(postReqDto.getThumbNail());
+    public PostResponseDto save(PostRequestDto postRequestDto) {
+        System.out.println("SERVICE SAVE 진입");
+        if (!postRequestDto.getImages().isEmpty()) {
+            List<String> images = postRequestDto.getImages();
+            for (String image: images) {
+                System.out.println("image : " + image);
             }
-            postRepository.save(modifiedPost);
         }
+        // 이미지 S3 저장 후, image 저장해야함
+        PostEntity savedPostEntity = postRepository.save(postRequestDto.toEntity());
+        System.out.println("saved : " + savedPostEntity.toString());
+        return new PostResponseDto(savedPostEntity);
     }
 
+    @Transactional
+    public PostResponseDto update(int id, PostRequestDto postRequestDto) {
+        System.out.println(postRequestDto.toString());
+        PostEntity originPost = postRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("해당" + id + "에 대한 데이터가 없습니다."));
+        originPost.update(postRequestDto.getTitle(), postRequestDto.getContent(), postRequestDto.getAuthor(), postRequestDto.getThumbNail());
+        PostEntity modifyPost = postRepository.save(originPost);
+        // save 하지 않아도 더티 체킹으로 인하여 DB에 저장이 되지만, lastmodifiedDate 업데이트 안됌.
+        return new PostResponseDto(modifyPost);
+    }
+
+    @Transactional
+    public void delete(int id) {
+        postRepository.deleteById(id);
+    }
+
+    @Transactional
+    public boolean verifyPassword(String password) {
+        System.out.println("pass : " + password);
+        return password.equals("0725"); // env 로 수정 예정.
+    }
 }
+
+
+
+
