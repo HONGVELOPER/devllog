@@ -1,13 +1,13 @@
 package devlog.hong.domain.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "images")
 public class ImageEntity extends BaseEntity {
     @Id
@@ -18,6 +18,12 @@ public class ImageEntity extends BaseEntity {
     @Column(nullable = false)
     private String img;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "post_id") // N:1 양방향 , 관계 주인 Post
     private PostEntity postEntity;
+
+    @Builder
+    public ImageEntity(String img) {
+        this.img = img;
+    }
 }

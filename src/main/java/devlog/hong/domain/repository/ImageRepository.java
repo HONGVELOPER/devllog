@@ -1,4 +1,4 @@
-package devlog.hong.repository;
+package devlog.hong.domain.repository;
 
 import devlog.hong.domain.entity.ImageEntity;
 import devlog.hong.domain.entity.PostEntity;

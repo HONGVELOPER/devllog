@@ -6,10 +6,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity
 @Table(name = "posts")
 public class PostEntity extends BaseEntity {
 
@@ -33,8 +33,8 @@ public class PostEntity extends BaseEntity {
     @Column(nullable = false)
     private String thumbNail;
 
-    @OneToMany(mappedBy = "postEntity", cascade = CascadeType.ALL)
-    private List<ImageEntity> images = new ArrayList<>();
+    @OneToMany(mappedBy = "postEntity") // N:1 양방향 , 관계 주인 Post
+    List<ImageEntity> imageEntity = new ArrayList<>();
 
     @Builder
     public PostEntity(String title, String content, String author, int viewCount, String thumbNail) {
@@ -52,4 +52,5 @@ public class PostEntity extends BaseEntity {
         this.thumbNail = thumbNail;
     }
 }
+
 

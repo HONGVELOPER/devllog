@@ -1,4 +1,4 @@
-package devlog.hong.domain.dto;
+package devlog.hong.dto;
 
 import devlog.hong.domain.entity.ImageEntity;
 import devlog.hong.domain.entity.PostEntity;
@@ -24,25 +24,26 @@ public class PostRequestDto extends BaseDto {
     @NotBlank(message = "thumbNail 을 확인해주세요.")
     private String thumbNail;
 
-    private List<ImageEntity> images;
+    private List<String> images;
 
     @Builder
-    public PostRequestDto(String title, String content, String author, int viewCount, String thumbNail) {
+    public PostRequestDto(String title, String content, String author, int viewCount, String thumbNail, List<String> images) {
         this.title = title;
         this.content = content;
         this.author = author;
         this.viewCount = viewCount;
         this.thumbNail = thumbNail;
+        this.images = images;
     }
 
     public PostEntity toEntity() {
         return PostEntity.builder()
-            .title(title)
-            .content(content)
-            .author(author)
-            .viewCount(viewCount)
-            .thumbNail(thumbNail)
-            .build();
+                .title(title)
+                .content(content)
+                .author(author)
+                .viewCount(viewCount)
+                .thumbNail(thumbNail)
+                .build();
     }
 
 }

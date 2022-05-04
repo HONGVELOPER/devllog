@@ -1,4 +1,4 @@
-package devlog.hong.domain.dto;
+package devlog.hong.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

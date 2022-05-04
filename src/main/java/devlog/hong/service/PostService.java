@@ -2,10 +2,10 @@ package devlog.hong.service;
 
 import devlog.hong.domain.entity.ImageEntity;
 import devlog.hong.domain.entity.PostEntity;
-import devlog.hong.repository.ImageRepository;
-import devlog.hong.repository.PostRepository;
-import devlog.hong.domain.dto.PostRequestDto;
-import devlog.hong.domain.dto.PostResponseDto;
+import devlog.hong.domain.repository.ImageRepository;
+import devlog.hong.domain.repository.PostRepository;
+import devlog.hong.dto.PostRequestDto;
+import devlog.hong.dto.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,15 +39,12 @@ public class PostService {
     public PostResponseDto save(PostRequestDto postRequestDto) {
         System.out.println("SERVICE SAVE 진입");
         if (!postRequestDto.getImages().isEmpty()) {
-            List<ImageEntity> images = postRequestDto.getImages();
-            for (ImageEntity image: images) {
+            List<String> images = postRequestDto.getImages();
+            for (String image: images) {
                 System.out.println("image : " + image);
             }
         }
-        // 스프링 이미지 먼저 S3 연결 후, DB 올린 ID 저장으로 바꿔야함
-//            if (!postReqDto.getImages().isEmpty()) { // 값이 있을경우에만
-//                postEntity.setImages(postReqDto.getImages());
-//            }
+        // 스프링 이미지 먼저 S3 연결 후, image 저장해야함
         PostEntity savedPostEntity = postRepository.save(postRequestDto.toEntity());
         System.out.println("saved : " + savedPostEntity.toString());
         return new PostResponseDto(savedPostEntity);
@@ -60,7 +57,7 @@ public class PostService {
                 () -> new EntityNotFoundException("해당" + id + "에 대한 데이터가 없습니다."));
         originPost.update(postRequestDto.getTitle(), postRequestDto.getContent(), postRequestDto.getAuthor(), postRequestDto.getThumbNail());
         PostEntity modifyPost = postRepository.save(originPost);
-        // save 하지 않아도 더티 체킹으로 인하여 저장이 되지만, lastmodifiedDate 가 업데이트 안됌.
+        // save 하지 않아도 더티 체킹으로 인하여 DB에 저장이 되지만, lastmodifiedDate 업데이트 안됌.
         return new PostResponseDto(modifyPost);
     }
 
@@ -70,10 +67,9 @@ public class PostService {
     }
 
     @Transactional
-    public boolean password(String password) {
+    public boolean verifyPassword(String password) {
         System.out.println("pass : " + password);
-        // password 가 0725 가 아니라 password==0725 로 인식됨 수정해야함
-        return password.equals("0725");
+        return password.equals("0725"); // env 로 수정 예정.
     }
 }
 

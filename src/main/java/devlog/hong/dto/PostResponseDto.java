@@ -1,4 +1,4 @@
-package devlog.hong.domain.dto;
+package devlog.hong.dto;
 
 import devlog.hong.domain.entity.PostEntity;
 import lombok.*;

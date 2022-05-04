@@ -3,8 +3,9 @@ package devlog.hong.controller;
 import devlog.hong.controller.result.BaseResult;
 import devlog.hong.controller.result.ListResult;
 import devlog.hong.controller.result.SingleResult;
-import devlog.hong.domain.dto.PostRequestDto;
-import devlog.hong.domain.dto.PostResponseDto;
+import devlog.hong.dto.PostRequestDto;
+import devlog.hong.dto.PostResponseDto;
+import devlog.hong.dto.PasswordRequestDto;
 import devlog.hong.service.PostService;
 import devlog.hong.service.response.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -49,10 +50,8 @@ public class PostController {
     }
 
     @PostMapping("/post/password")
-    public BaseResult password(@RequestBody String password) {
-        System.out.println("password 진입");
-        boolean response = postService.password(password);
+    public BaseResult password(@RequestBody @Valid PasswordRequestDto passwordRequestDto) {
+        boolean response = postService.verifyPassword(passwordRequestDto.getPassword());
         return response ? responseService.getSuccessResult() : responseService.getFailResult();
-//        return responseService.getSuccessResult();
     }
 }
