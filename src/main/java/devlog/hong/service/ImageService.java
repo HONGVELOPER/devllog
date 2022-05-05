@@ -20,16 +20,19 @@ public class ImageService {
     @Transactional
     public List<ImageResponseDto> save(ImageRequestDto imageRequestDto) {
         List<ImageResponseDto> imageResponseDtoList = new ArrayList<>();
-        List<ImageEntity> imageEntities = imageRequestDto.toEntity();
-        imageRepository.saveAll(imageEntities).forEach(savedImageEntity -> {
+        List<ImageEntity> imageEntityList = imageRequestDto.toEntity();
+        imageRepository.saveAll(imageEntityList).forEach(savedImageEntity -> {
             imageResponseDtoList.add(new ImageResponseDto(savedImageEntity));
         });
         return imageResponseDtoList;
     }
 
-//    @Transactional
-//    public void deleteByName(List<String> fileNames) {
-//        imageRepository.deleteByImg(fileNames);
-//    }
+    @Transactional
+    public void delete(List<String> fileNames) {
+        fileNames.forEach(imageRepository::deleteByImg); // 자바 람다 함수
+//        fileNames.forEach(fileName -> {
+//            imageRepository.deleteByImg(fileName);
+//        });
+    }
 
 }

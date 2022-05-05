@@ -22,12 +22,12 @@ public class ImageRequestDto {
     }
 
     public List<ImageEntity> toEntity() {
-        List<ImageEntity> imageEntities = new ArrayList<>();
+        List<ImageEntity> imageEntityList = new ArrayList<>();
         images.forEach(image -> {
-            imageEntities.add(ImageEntity.builder()
+            imageEntityList.add(ImageEntity.builder()
                     .img(image)
                     .build());
         });
-        return imageEntities;
+        return imageEntityList;
     }
 }
