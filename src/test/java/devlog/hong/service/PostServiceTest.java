@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
 
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ class PostServiceTest {
     @InjectMocks
     private PostService postService;
 
+    @Value("${verify.password}")
+    private String envPassword;
 
     @Test
     @DisplayName("find by id")
@@ -88,10 +91,10 @@ class PostServiceTest {
         PostEntity postEntity = postRequestDto.toEntity();
         given(postRepository.save(any(PostEntity.class))).willReturn(postEntity);
         //when
-        PostResponseDto postResponseDto = postService.save(postRequestDto);
+        PostEntity savedPostEntity = postService.save(postRequestDto);
         //then
-        Assertions.assertNotNull(postResponseDto);
-        assertEquals(postRequestDto.getTitle(), postResponseDto.getTitle());
+        Assertions.assertNotNull(savedPostEntity);
+        assertEquals(postRequestDto.getTitle(), savedPostEntity.getTitle());
         verify(postRepository).save(any(PostEntity.class));
     }
 
@@ -132,5 +135,15 @@ class PostServiceTest {
         postService.delete(id);
         //then
         verify(postRepository, times(1)).deleteById(anyInt());
+    }
+    
+    @Test
+    public void verifyPassword() throws Exception {
+        //given
+        final String password = "passwordTest";
+        //when
+        boolean result = postService.verifyPassword(password);
+        //then
+        System.out.println("result: " + result);
     }
 }

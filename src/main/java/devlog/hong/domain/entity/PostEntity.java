@@ -35,7 +35,7 @@ public class PostEntity extends BaseEntity {
     private String thumbNail;
 
     @OneToMany(mappedBy = "postEntity", cascade = {CascadeType.ALL}, orphanRemoval=true) // N:1 양방향 , 관계 주인 Post
-    List<ImageEntity> imageEntity = new ArrayList<>();
+    List<ImageEntity> imageEntityList = new ArrayList<>();
 
     @Builder
     public PostEntity(String title, String content, String author, int viewCount, String thumbNail) {
