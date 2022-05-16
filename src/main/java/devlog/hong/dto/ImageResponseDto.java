@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 @ToString
 public class ImageResponseDto {
     private int id;
-    private String img;
+    private String image;
     private LocalDateTime date;
 
     // ResponseDto는 DB 처리 한 결과 값을 가지고 사용하므로 굳이 builder 패턴 사용 안함
     public ImageResponseDto(ImageEntity image) {
         this.id = image.getId();
-        this.img = image.getImg();
+        this.image = image.getImage();
         this.date = image.getModifiedDate();
     }
 }

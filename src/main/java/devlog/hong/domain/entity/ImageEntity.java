@@ -16,14 +16,15 @@ public class ImageEntity extends BaseEntity {
     private int id;
 
     @Column(nullable = false)
-    private String img;
+    private String image;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id") // N:1 양방향 , 관계 주인 Post
     private PostEntity postEntity;
 
     @Builder
-    public ImageEntity(String img) {
-        this.img = img;
+    public ImageEntity(PostEntity postEntity, String image) {
+        this.postEntity = postEntity;
+        this.image = image;
     }
 }

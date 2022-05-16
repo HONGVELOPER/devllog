@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,24 +19,16 @@ import java.util.List;
 public class ImageController {
 
     private final ResponseService responseService;
-    private final AwsS3Service awsS3Service;
     private final ImageService imageService;
 
     @PostMapping("/images")
-    public ListResult<ImageResponseDto> save(@RequestPart List<MultipartFile> multipartFiles) {
+    public ListResult<ImageResponseDto> save(@RequestBody @Valid ImageRequestDto imageRequestDto) {
         System.out.println("image 접근");
-        List<String> fileNames = awsS3Service.save(multipartFiles);
-        return responseService.getListResult(imageService.save(new ImageRequestDto(fileNames)));
+        return responseService.getListResult(imageService.save(imageRequestDto));
     }
 
-    @DeleteMapping("/partOfImages") // UPDATE 하면서 전체가 아닌 일부 사진 삭제
+    @DeleteMapping("/images")
     public void deleteByName(@RequestBody List<String> fileNames) {
-        awsS3Service.delete(fileNames);
         imageService.delete(fileNames);
-    }
-
-    @DeleteMapping("images") // 게시글이 삭제되면서 해당 글에 있는 모든 사진 Cascade 삭제
-    public void deleteByPost(@RequestBody List<String> fileNames) {
-        awsS3Service.delete(fileNames);
     }
 }

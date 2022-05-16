@@ -1,26 +1,34 @@
 package devlog.hong.dto;
 
-import devlog.hong.domain.entity.ImageEntity;
 import devlog.hong.domain.entity.PostEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class PostRequestDto extends BaseDto {
+
     @NotBlank(message = "title 을 확인해주세요.")
     private String title;
+
     @NotBlank(message = "content 을 확인해주세요.")
     private String content;
+
     @NotBlank(message = "작성자 을 확인해주세요.")
     private String author;
+
     @NotNull
     private int viewCount;
+
     @NotBlank(message = "thumbNail 을 확인해주세요.")
     private String thumbNail;
 
@@ -45,5 +53,4 @@ public class PostRequestDto extends BaseDto {
                 .thumbNail(thumbNail)
                 .build();
     }
-
 }

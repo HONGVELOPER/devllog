@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -27,7 +28,7 @@ public class AwsS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public List<String> save(List<MultipartFile> multipartFiles) {
+    public List<String> save(@RequestPart List<MultipartFile> multipartFiles) {
         List<String> fileNameList = new ArrayList<>();
         multipartFiles.forEach(file -> {
             String fileName = createFileName(file.getOriginalFilename());

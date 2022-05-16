@@ -1,9 +1,12 @@
 package devlog.hong.dto;
 
+import devlog.hong.domain.entity.ImageEntity;
 import devlog.hong.domain.entity.PostEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -16,6 +19,8 @@ public class PostResponseDto {
     private int viewCount;
     private String thumbNail;
     private LocalDateTime date;
+    private List<ImageResponseDto> imageResponseDtoList;
+//    private ImageEntity imageEntity;
 
     public PostResponseDto(PostEntity post) {
         this.id = post.getId();
@@ -25,5 +30,6 @@ public class PostResponseDto {
         this.viewCount = post.getViewCount();
         this.thumbNail = post.getThumbNail();
         this.date = post.getModifiedDate();
+        this.imageResponseDtoList = post.getImageEntityList().stream().map(ImageResponseDto::new).collect(Collectors.toList());
     }
 }
