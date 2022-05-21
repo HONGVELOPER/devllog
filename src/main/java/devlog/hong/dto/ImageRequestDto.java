@@ -12,33 +12,28 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
 public class ImageRequestDto {
 
-    @NotNull(message = "post id 를 확인해주세요.")
-    private int postId;
-
-    @Valid
-    @NotNull(message = "img 를 확인해주세요.")
-    @Size(min = 1)
     private List<String> images;
 
+    private List<String> deleteImages;
+
     @Builder
-    public ImageRequestDto(int postId, List<String> images) {
-        this.postId = postId;
+    public ImageRequestDto(int postId, List<String> images, List<String> deleteImages) {
         this.images = images;
+        this.deleteImages = deleteImages;
     }
 
     public List<ImageEntity> toEntity(PostEntity postEntity) {
-        List<ImageEntity> imageEntityList = new ArrayList<>();
-        images.forEach(image -> {
-            imageEntityList.add(ImageEntity.builder()
-                            .postEntity(postEntity)
-                            .image(image)
-                            .build());
-        });
-        return imageEntityList;
+        return this.images.stream()
+                .map(image -> ImageEntity.builder()
+                .postEntity(postEntity)
+                .image(image)
+                .build())
+                .collect(Collectors.toList());
     }
 }

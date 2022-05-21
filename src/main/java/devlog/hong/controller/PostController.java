@@ -4,10 +4,7 @@ import devlog.hong.controller.result.BaseResult;
 import devlog.hong.controller.result.ListResult;
 import devlog.hong.controller.result.SingleResult;
 import devlog.hong.domain.entity.PostEntity;
-import devlog.hong.dto.ImageRequestDto;
-import devlog.hong.dto.PostRequestDto;
-import devlog.hong.dto.PostResponseDto;
-import devlog.hong.dto.PasswordRequestDto;
+import devlog.hong.dto.*;
 import devlog.hong.service.AwsS3Service;
 import devlog.hong.service.ImageService;
 import devlog.hong.service.PostService;
@@ -16,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -24,19 +22,13 @@ public class PostController {
 
     private final PostService postService;
     private final ResponseService responseService;
+    private final AwsS3Service awsS3Service;
     private final ImageService imageService;
 
     @PostMapping("/post")
     public SingleResult<PostResponseDto> save(@RequestBody @Valid PostRequestDto postRequestDto) {
-        PostEntity savedPostEntity = postService.save(postRequestDto);
-        if (!postRequestDto.getImages().isEmpty()) {
-            ImageRequestDto imageRequestDto = ImageRequestDto.builder()
-                    .postId(savedPostEntity.getId())
-                    .images(postRequestDto.getImages())
-                    .build();
-            imageService.save(imageRequestDto);
-        }
-        return responseService.getSingleResult(new PostResponseDto(savedPostEntity));
+        PostResponseDto postResponseDto = postService.save(postRequestDto);
+        return responseService.getSingleResult(postResponseDto);
     }
 
     @GetMapping("/posts")
@@ -49,10 +41,14 @@ public class PostController {
         return responseService.getSingleResult(postService.findById(postId));
     }
 
-    @PatchMapping("/post/{postId}")
+    @PutMapping("/post/{postId}")
     public SingleResult<PostResponseDto> update(@PathVariable("postId") int postId, @RequestBody PostRequestDto postRequestDto) {
         System.out.println(postRequestDto.toString());
-        return responseService.getSingleResult(postService.update(postId, postRequestDto));
+        if (!postRequestDto.getDeleteImages().isEmpty()) {
+            imageService.delete(postRequestDto.getDeleteImages());
+        }
+        PostResponseDto postResponseDto = postService.update(postId, postRequestDto);
+        return responseService.getSingleResult(postResponseDto);
     }
 
     @DeleteMapping("/post/{postId}")

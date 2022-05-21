@@ -28,14 +28,14 @@ public class AwsS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public List<String> save(@RequestPart List<MultipartFile> multipartFiles) {
+    public List<String> save(List<MultipartFile> multipartFileList) {
         List<String> fileNameList = new ArrayList<>();
-        multipartFiles.forEach(file -> {
-            String fileName = createFileName(file.getOriginalFilename());
+        multipartFileList.forEach(multipartFile -> {
+            String fileName = createFileName(multipartFile.getOriginalFilename());
             ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(file.getSize());
-            objectMetadata.setContentType(file.getContentType());
-            try (InputStream inputStream = file.getInputStream()) {
+            objectMetadata.setContentLength(multipartFile.getSize());
+            objectMetadata.setContentType(multipartFile.getContentType());
+            try (InputStream inputStream = multipartFile.getInputStream()) {
                 amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
                         .withCannedAcl(CannedAccessControlList.PublicRead));
             } catch (IOException e) {
@@ -46,9 +46,9 @@ public class AwsS3Service {
         return fileNameList;
     }
 
-    public void delete(List<String> fileName) {
-        fileName.forEach(file -> {
-            amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, file));
+    public void delete(List<String> fileNameList) {
+        fileNameList.forEach(fileName -> {
+            amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
         });
     }
 
