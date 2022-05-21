@@ -24,9 +24,9 @@ public class ImageService {
 
     // 이미지 S3 저장 후, image 저장해야함
     @Transactional
-    public List<ImageResponseDto> save(ImageRequestDto imageRequestDto) {
-        PostEntity postEntity = postRepository.findById(imageRequestDto.getPostId()).orElseThrow(
-                () -> new EntityNotFoundException("해당" + imageRequestDto.getPostId() + "에 대한 데이터가 없습니다.")
+    public List<ImageResponseDto> save(int postId, ImageRequestDto imageRequestDto) {
+        PostEntity postEntity = postRepository.findById(postId).orElseThrow(
+                () -> new EntityNotFoundException("해당" + postId + "에 대한 데이터가 없습니다.")
         );
         List<ImageEntity> imageEntityList = imageRequestDto.toEntity(postEntity);
         return imageRepository.saveAll(imageEntityList)
@@ -36,8 +36,8 @@ public class ImageService {
     }
 
     @Transactional
-    public void delete(List<String> fileNames) {
-        fileNames.forEach(imageRepository::deleteByImage); // 자바 람다 함수
+    public void delete(List<String> deleteImages) {
+        deleteImages.forEach(imageRepository::deleteByImage);
     }
 
 }

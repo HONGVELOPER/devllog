@@ -52,6 +52,11 @@ public class PostEntity extends BaseEntity {
         this.author = author;
         this.thumbNail = thumbNail;
     }
+
+    public void addImageEntity(ImageEntity imageEntity) {
+        imageEntityList.add(imageEntity);
+        imageEntity.setPostEntity(this);
+    }
 }
 
 

@@ -91,10 +91,10 @@ class PostServiceTest {
         PostEntity postEntity = postRequestDto.toEntity();
         given(postRepository.save(any(PostEntity.class))).willReturn(postEntity);
         //when
-        PostEntity savedPostEntity = postService.save(postRequestDto);
+        PostResponseDto postResponseDto = postService.save(postRequestDto);
         //then
-        Assertions.assertNotNull(savedPostEntity);
-        assertEquals(postRequestDto.getTitle(), savedPostEntity.getTitle());
+        Assertions.assertNotNull(postResponseDto);
+        assertEquals(postRequestDto.getTitle(), postResponseDto.getTitle());
         verify(postRepository).save(any(PostEntity.class));
     }
 

@@ -1,5 +1,6 @@
 package devlog.hong.controller;
 
+import devlog.hong.controller.result.BaseResult;
 import devlog.hong.controller.result.ListResult;
 import devlog.hong.dto.ImageRequestDto;
 import devlog.hong.dto.ImageResponseDto;
@@ -18,17 +19,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ImageController {
 
-    private final ResponseService responseService;
     private final ImageService imageService;
+    private final ResponseService responseService;
 
-    @PostMapping("/images")
-    public ListResult<ImageResponseDto> save(@RequestBody @Valid ImageRequestDto imageRequestDto) {
+    @PostMapping("/images/{postId}")
+    public ListResult<ImageResponseDto> save(
+            @PathVariable("postId") int postId,
+            @RequestBody @Valid ImageRequestDto imageRequestDto) {
         System.out.println("image 접근");
-        return responseService.getListResult(imageService.save(imageRequestDto));
+        return responseService.getListResult(imageService.save(postId, imageRequestDto));
     }
 
     @DeleteMapping("/images")
-    public void deleteByName(@RequestBody List<String> fileNames) {
-        imageService.delete(fileNames);
+    public BaseResult deleteByName(@RequestBody @Valid ImageRequestDto imageRequestDto) {
+        imageService.delete(imageRequestDto.getDeleteImages());
+        return responseService.getSuccessResult();
     }
 }
