@@ -4,15 +4,12 @@ import devlog.hong.controller.result.BaseResult;
 import devlog.hong.controller.result.ListResult;
 import devlog.hong.dto.ImageRequestDto;
 import devlog.hong.dto.ImageResponseDto;
-import devlog.hong.service.AwsS3Service;
 import devlog.hong.service.ImageService;
 import devlog.hong.service.response.ResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")

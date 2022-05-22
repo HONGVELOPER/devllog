@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -18,7 +17,7 @@ public class PostResponseDto {
     private String author;
     private int viewCount;
     private String thumbNail;
-    private LocalDateTime date;
+    private String date;
     private List<ImageResponseDto> imageResponseDtoList;
 
     public void setImageResponseDtoList(List<ImageResponseDto> imageResponseDtoList) {
@@ -32,6 +31,6 @@ public class PostResponseDto {
         this.author = post.getAuthor();
         this.viewCount = post.getViewCount();
         this.thumbNail = post.getThumbNail();
-        this.date = post.getModifiedDate();
+        this.date = post.getUpdatedDate();
     }
 }
