@@ -6,11 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +18,7 @@ public class ImageRequestDto {
     private List<String> deleteImages;
 
     @Builder
-    public ImageRequestDto(int postId, List<String> images, List<String> deleteImages) {
+    public ImageRequestDto(List<String> images, List<String> deleteImages) {
         this.images = images;
         this.deleteImages = deleteImages;
     }

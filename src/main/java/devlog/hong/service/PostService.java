@@ -46,7 +46,7 @@ public class PostService {
         return postResponseDto;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) // image 없이 포스팅만 가져옴.
     public List<PostResponseDto> findAll() {
         return  postRepository.findAll()
             .stream()
@@ -54,7 +54,8 @@ public class PostService {
             .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
+    // 조회수 증가 로직 추가해야함.
+    @Transactional(readOnly = true) // 게시글과 해당 게시글의 사진 모두 가져옴.
     public PostResponseDto findById(int postId) {
         PostEntity postEntity = postRepository.findById(postId).orElseThrow(
                 () -> new EntityNotFoundException("해당" + postId + "에 대한 데이터가 없습니다.")
@@ -98,7 +99,7 @@ public class PostService {
     }
 
 
-    @Transactional
+    @Transactional // cascade 설정으로 게시글이 삭제되면 해당 게시글이 갖는 사진 또한 삭제.
     public void delete(int postId) {
         postRepository.findById(postId).orElseThrow(
                 () -> new EntityNotFoundException("해당" + postId + "에 대한 데이터가 없습니다."));

@@ -3,7 +3,6 @@ package devlog.hong.controller;
 import devlog.hong.controller.result.BaseResult;
 import devlog.hong.controller.result.ListResult;
 import devlog.hong.controller.result.SingleResult;
-import devlog.hong.domain.entity.PostEntity;
 import devlog.hong.dto.*;
 import devlog.hong.service.AwsS3Service;
 import devlog.hong.service.ImageService;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
