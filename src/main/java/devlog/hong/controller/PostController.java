@@ -4,7 +4,6 @@ import devlog.hong.controller.result.BaseResult;
 import devlog.hong.controller.result.ListResult;
 import devlog.hong.controller.result.SingleResult;
 import devlog.hong.dto.*;
-import devlog.hong.service.AwsS3Service;
 import devlog.hong.service.ImageService;
 import devlog.hong.service.PostService;
 import devlog.hong.service.response.ResponseService;
@@ -20,11 +19,11 @@ public class PostController {
 
     private final PostService postService;
     private final ResponseService responseService;
-    private final AwsS3Service awsS3Service;
     private final ImageService imageService;
 
     @PostMapping("/post")
     public SingleResult<PostResponseDto> save(@RequestBody @Valid PostRequestDto postRequestDto) {
+        System.out.println("Request : " + postRequestDto.toString());
         PostResponseDto postResponseDto = postService.save(postRequestDto);
         return responseService.getSingleResult(postResponseDto);
     }
@@ -36,6 +35,7 @@ public class PostController {
 
     @GetMapping("/post/{postId}")
     public SingleResult<PostResponseDto> findById(@PathVariable("postId") int postId) {
+        postService.updateViewCount(postId);
         return responseService.getSingleResult(postService.findById(postId));
     }
 

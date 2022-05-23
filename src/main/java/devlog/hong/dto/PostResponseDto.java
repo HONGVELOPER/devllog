@@ -31,6 +31,11 @@ public class PostResponseDto {
         this.author = post.getAuthor();
         this.viewCount = post.getViewCount();
         this.thumbNail = post.getThumbNail();
-        this.date = post.getUpdatedDate();
+        this.date = post.getUpdatedDate().split("\\s")[0];
+    }
+
+    public PostResponseDto regex() {
+        this.content = this.content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+        return this;
     }
 }

@@ -19,7 +19,7 @@ public class AwsS3Controller {
     private final ResponseService responseService;
 
     @PostMapping("/images")
-    public ListResult<String> save(@RequestPart List<MultipartFile> multipartFileList) {
+    public ListResult<String[]> save(@RequestPart List<MultipartFile> multipartFileList) {
         return responseService.getListResult(awsS3Service.save(multipartFileList));
     }
 
