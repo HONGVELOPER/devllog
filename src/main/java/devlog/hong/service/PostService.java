@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
     private final PostRepository postRepository;
 
     @Value("${verify.password}")
@@ -50,11 +51,10 @@ public class PostService {
     public List<PostResponseDto> findAll() {
         return  postRepository.findAll()
             .stream()
-            .map(PostResponseDto::new)
+            .map(postEntity -> new PostResponseDto(postEntity).regex())
             .collect(Collectors.toList());
     }
 
-    // 조회수 증가 로직 추가해야함.
     @Transactional(readOnly = true) // 게시글과 해당 게시글의 사진 모두 가져옴.
     public PostResponseDto findById(int postId) {
         PostEntity postEntity = postRepository.findById(postId).orElseThrow(
@@ -85,7 +85,7 @@ public class PostService {
                             .build())
                     .forEach(originPostEntity::addImageEntity);
         }
-        // save 하지 않아도 더티 체킹으로 인하여 DB에 저장이 되지만, lastmodifiedDate 업데이트 안됌.
+        // save 하지 않아도 더티 체킹으로 인하여 DB에 저장이 되지만, LastModifiedDate 업데이트 안됌.
         PostEntity savedPostEntity = postRepository.save(originPostEntity);
         PostResponseDto postResponseDto = new PostResponseDto(savedPostEntity);
         if (!savedPostEntity.getImageEntityList().isEmpty()) {
@@ -98,7 +98,6 @@ public class PostService {
         return postResponseDto;
     }
 
-
     @Transactional // cascade 설정으로 게시글이 삭제되면 해당 게시글이 갖는 사진 또한 삭제.
     public void delete(int postId) {
         postRepository.findById(postId).orElseThrow(
@@ -110,6 +109,12 @@ public class PostService {
     public boolean verifyPassword(String password) {
         return password.equals(envPassword);
     }
+
+    @Transactional
+    public void updateViewCount(int postId) {
+        postRepository.updateViewCount(postId);
+    }
+
 }
 
 

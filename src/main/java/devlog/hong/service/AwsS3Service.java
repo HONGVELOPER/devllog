@@ -27,8 +27,8 @@ public class AwsS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public List<String> save(List<MultipartFile> multipartFileList) {
-        List<String> fileNameList = new ArrayList<>();
+    public List<String[]> save(List<MultipartFile> multipartFileList) {
+        List<String[]> fileNameList = new ArrayList<>();
         multipartFileList.forEach(multipartFile -> {
             String fileName = createFileName(multipartFile.getOriginalFilename());
             ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -40,7 +40,10 @@ public class AwsS3Service {
             } catch (IOException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패하였습니다.");
             }
-            fileNameList.add(fileName);
+            String[] fileNameArr = new String[2];
+            fileNameArr[0] = multipartFile.getOriginalFilename();
+            fileNameArr[1] = amazonS3Client.getUrl(bucket, fileName).toString();
+            fileNameList.add(fileNameArr);
         });
         return fileNameList;
     }
