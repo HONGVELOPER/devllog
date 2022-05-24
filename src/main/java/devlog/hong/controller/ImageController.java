@@ -23,7 +23,6 @@ public class ImageController {
     public ListResult<ImageResponseDto> save(
             @PathVariable("postId") int postId,
             @RequestBody @Valid ImageRequestDto imageRequestDto) {
-        System.out.println("image 접근");
         return responseService.getListResult(imageService.save(postId, imageRequestDto));
     }
 

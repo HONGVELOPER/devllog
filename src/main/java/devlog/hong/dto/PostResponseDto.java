@@ -8,7 +8,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@ToString
 public class PostResponseDto {
 
     private int id;

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -99,10 +100,17 @@ public class PostService {
     }
 
     @Transactional // cascade 설정으로 게시글이 삭제되면 해당 게시글이 갖는 사진 또한 삭제.
-    public void delete(int postId) {
-        postRepository.findById(postId).orElseThrow(
+    public List<String> delete(int postId) {
+        PostEntity deleteEntity = postRepository.findById(postId).orElseThrow(
                 () -> new EntityNotFoundException("해당" + postId + "에 대한 데이터가 없습니다."));
+        List<String> deleteFileNameList = new ArrayList<>();
+        deleteFileNameList.add(deleteEntity.getThumbNail().split(".com/")[1]);
+        if (!deleteEntity.getImageEntityList().isEmpty()) {
+            deleteEntity.getImageEntityList()
+                    .forEach(ImageEntity -> deleteFileNameList.add(ImageEntity.getImage().split(".com/")[1]));
+        }
         postRepository.deleteById(postId);
+        return deleteFileNameList;
     }
 
     @Transactional
