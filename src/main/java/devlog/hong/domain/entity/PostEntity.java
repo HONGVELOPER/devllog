@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "posts")
+@ToString
 public class PostEntity extends BaseEntity {
 
     @Id
