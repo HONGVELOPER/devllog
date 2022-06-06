@@ -4,10 +4,12 @@ import devlog.hong.domain.entity.PostEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class PostResponseDto {
 
     private int id;
@@ -30,6 +32,7 @@ public class PostResponseDto {
         this.author = post.getAuthor();
         this.viewCount = post.getViewCount();
         this.thumbNail = post.getThumbNail();
+        post.setUpdatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         this.date = post.getUpdatedDate().split("\\s")[0];
     }
 

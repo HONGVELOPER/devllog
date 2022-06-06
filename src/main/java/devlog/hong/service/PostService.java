@@ -29,6 +29,7 @@ public class PostService {
     public PostResponseDto save(PostRequestDto postRequestDto) {
         PostEntity postEntity = postRequestDto.toEntity();
         if (!postRequestDto.getImages().isEmpty()) {
+
             postRequestDto.getImages().stream()
                     .map(image -> ImageEntity.builder()
                                     .postEntity(postEntity)
@@ -74,7 +75,6 @@ public class PostService {
 
     @Transactional
     public PostResponseDto update(int postId, PostRequestDto postRequestDto) {
-        System.out.println(postRequestDto.toString());
         PostEntity originPostEntity = postRepository.findById(postId).orElseThrow(
                 () -> new EntityNotFoundException("해당" + postId + "에 대한 데이터가 없습니다."));
         originPostEntity.update(postRequestDto.getTitle(), postRequestDto.getContent(), postRequestDto.getAuthor(), postRequestDto.getThumbNail());
