@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +54,7 @@ class PostServiceTest {
                 .images(list)
                 .build();
         PostEntity postEntity = postRequestDto.toEntity();
+        postEntity.setUpdatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         given(postRepository.save(any(PostEntity.class))).willReturn(postEntity);
         //when
         PostResponseDto postResponseDto = postService.save(postRequestDto);
@@ -74,6 +77,7 @@ class PostServiceTest {
                 .images(list)
                 .build();
         PostEntity postEntity = postRequestDto.toEntity();
+        postEntity.setUpdatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         given(postRepository.save(any(PostEntity.class))).willReturn(postEntity);
         //when
         PostResponseDto postResponseDto = postService.save(postRequestDto);
@@ -94,6 +98,7 @@ class PostServiceTest {
                 .viewCount(0)
                 .thumbNail("1번 썸네일")
                 .build();
+        postEntity.setUpdatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         given(postRepository.findById(anyInt())).willReturn(Optional.of(postEntity));
         //when
         PostResponseDto postResponseDto = postService.findById(postEntity.getId());
@@ -114,6 +119,7 @@ class PostServiceTest {
                 .viewCount(0)
                 .thumbNail("1번 썸네일")
                 .build();
+        postEntity.setUpdatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         postEntityList.add(postEntity);
         given(postRepository.findAll()).willReturn(postEntityList);
         //when
@@ -142,6 +148,7 @@ class PostServiceTest {
                 .viewCount(0)
                 .thumbNail("1번 썸네일")
                 .build();
+        postEntity.setUpdatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         given(postRepository.findById(postEntity.getId())).willReturn(Optional.of(postEntity));
         given(postRepository.save(postEntity)).willReturn(postEntity);
         //when

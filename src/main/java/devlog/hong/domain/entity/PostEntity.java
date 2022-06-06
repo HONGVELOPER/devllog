@@ -22,7 +22,7 @@ public class PostEntity extends BaseEntity {
     @Column(nullable = false) // @Notnull 과 차이 비교해보자.
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length=10000)
     private String content;
 
     @Column(nullable = false)
