@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -29,6 +30,10 @@ public class PostRequestDto extends BaseDto {
 
     @NotBlank(message = "thumbNail 을 확인해주세요.")
     private String thumbNail;
+
+    @Size(min = 1)
+    @NotNull
+    private List<String> tags;
 
     // 포스팅은 이미지가 있을수도 없을수도 있다.
     private List<String> images;
@@ -55,4 +60,6 @@ public class PostRequestDto extends BaseDto {
                 .thumbNail(thumbNail)
                 .build();
     }
+
+
 }

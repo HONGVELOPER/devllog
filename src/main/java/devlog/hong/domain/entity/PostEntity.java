@@ -37,6 +37,10 @@ public class PostEntity extends BaseEntity {
     @OneToMany(mappedBy = "postEntity", cascade = {CascadeType.ALL}, orphanRemoval=true) // N:1 양방향 , 관계 주인 Post
     List<ImageEntity> imageEntityList = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tag_id")
+    private TagEntity tagEntity;
+
     @Builder
     public PostEntity(String title, String content, String author, int viewCount, String thumbNail) {
         this.title = title;
